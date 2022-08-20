@@ -33,7 +33,7 @@ export default function App() {
         if (window.ethereum) {
             // Try to get MetaMask account
             const accounts = await window.ethereum.request({
-                method: 'eth_accounts',
+                method: 'eth_requestAccounts',
             })
             setDeployWallet(accounts[0])
             web3.eth.defaultAccount = accounts[0]
@@ -82,10 +82,7 @@ export default function App() {
             .send({ from: deployWallet, to: inputWallet })
             .then((res) => {
                 console.log(res)
-                setDeposit([
-                    ...deposit,
-                    res.events.LogNewWallet.returnValues.receiver,
-                ])
+                setDeposit(res.events.LogNewWallet.returnValues.receiver)
             })
             .catch((e) => console.log(e))
     }
@@ -117,6 +114,8 @@ export default function App() {
 
         // Sweep 을 입금계좌에서 실행해야 하는 것 같다
         newContract.options.address = deposit
+
+        console.log(deposit)
 
         const token = id === 0 ? USDT_ADDR : USDC_ADDR
         const amount =
@@ -225,7 +224,7 @@ export default function App() {
                 </li>
                 <li style={{ padding: '10px 0' }}>
                     <div style={{ display: 'flex', gap: '10px' }}>
-                        <span>Token (필수인것 같기는 한데, 명확히는 X)</span>
+                        <span>Token (필수 아님)</span>
                         <button onClick={() => deployContract(TOKEN, setToken)}>
                             배포
                         </button>
