@@ -74,6 +74,8 @@ contract UserWallet {
 
     function UserWallet(address _sweeperlist) {
         sweeperList = AbstractSweeperList(_sweeperlist);
+        // 단순한 인터페이스 목적인 것 같다 > 함수가 아무것도 하지 않고 입력값 반환
+        // 결론적으로 호출한 컨트랙트인 Controller의 주소를 가져가는건가
     }
 
     function() public payable {}
